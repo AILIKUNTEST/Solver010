@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>solver010 - Science Solver</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .username {
+      text-align: center;
+      font-size: 1.2em;
+      color: #555;
+      margin-top: -10px;
+      margin-bottom: 30px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .tab {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: #0056b3;
+    }
+    .content {
+      display: none;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .content.active {
+      display: block;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Science Solver</h1>
+  <div class="username">Username: <strong>solver010</strong></div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('math')">Math</div>
+    <div class="tab" onclick="showTab('physics')">Physics</div>
+    <div class="tab" onclick="showTab('chemistry')">Chemistry</div>
+    <div class="tab" onclick="showTab('biology')">Biology</div>
+  </div>
+
+  <div id="math" class="content active">
+    <h2>Math Solver</h2>
+    <input type="text" id="mathInput" placeholder="e.g., 2 + 2 * 3">
+    <button onclick="solveMath()">Solve</button>
+    <p id="mathResult"></p>
+  </div>
+
+  <div id="physics" class="content">
+    <h2>Physics Calculator (Speed = Distance / Time)</h2>
+    <input type="number" id="distance" placeholder="Distance (m)">
+    <input type="number" id="time" placeholder="Time (s)">
+    <button onclick="solvePhysics()">Calculate Speed</button>
+    <p id="physicsResult"></p>
+  </div>
+
+  <div id="chemistry" class="content">
+    <h2>Chemistry (Molarity = moles / volume)</h2>
+    <input type="number" id="moles" placeholder="Moles (mol)">
+    <input type="number" id="volume" placeholder="Volume (L)">
+    <button onclick="solveChemistry()">Calculate Molarity</button>
+    <p id="chemistryResult"></p>
+  </div>
+
+  <div id="biology" class="content">
+    <h2>Biology Quick Facts</h2>
+    <input type="text" id="bioInput" placeholder="Enter a keyword (e.g., cell)">
+    <button onclick="getBiologyFact()">Search</button>
+    <p id="biologyResult"></p>
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function solveMath() {
+      const input = document.getElementById('mathInput').value;
+      try {
+        const result = eval(input);
+        document.getElementById('mathResult').innerText = 'Result: ' + result;
+      } catch {
+        document.getElementById('mathResult').innerText = 'Invalid expression';
+      }
+    }
+
+    function solvePhysics() {
+      const d = parseFloat(document.getElementById('distance').value);
+      const t = parseFloat(document.getElementById('time').value);
+      if (t === 0 || isNaN(d) || isNaN(t)) {
+        document.getElementById('physicsResult').innerText = 'Invalid input';
+        return;
+      }
+      const speed = d / t;
+      document.getElementById('physicsResult').innerText = 'Speed: ' + speed.toFixed(2) + ' m/s';
+    }
+
+    function solveChemistry() {
+      const moles = parseFloat(document.getElementById('moles').value);
+      const volume = parseFloat(document.getElementById('volume').value);
+      if (volume === 0 || isNaN(moles) || isNaN(volume)) {
+        document.getElementById('chemistryResult').innerText = 'Invalid input';
+        return;
+      }
+      const molarity = moles / volume;
+      document.getElementById('chemistryResult').innerText = 'Molarity: ' + molarity.toFixed(2) + ' mol/L';
+    }
+
+    function getBiologyFact() {
+      const keyword = document.getElementById('bioInput').value.toLowerCase();
+      const facts = {
+        cell: 'The cell is the basic unit of life.',
+        dna: 'DNA stores genetic information.',
+        photosynthesis: 'Photosynthesis occurs in the chloroplasts of plant cells.',
+        heart: 'The human heart has four chambers.'
+      };
+      document.getElementById('biologyResult').innerText = facts[keyword] || 'No fact found for "' + keyword + '".';
+    }
+  </script>
+</body>
+</html>
